@@ -123,6 +123,23 @@ export function getSeverityColor(severity: Severity) {
   return { Green: "#14B8A6", Amber: "#F59E0B", Red: "#EF4444" }[severity];
 }
 
+export function getClaimStatus(severity: Severity) {
+  return { Green: "Verified", Amber: "Under review", Red: "Pending verification" }[severity];
+}
+
+export function getEvidenceItems(hotspot: Hotspot, year: Year) {
+  return [
+    { label: "Satellite observation", detail: `Change signal recorded · ${year}` },
+    { label: "Claim register correlation", detail: `${hotspot.issueType} linked to district records` },
+    { label: "Field verification note", detail: "Review queue prepared for investigator" },
+  ];
+}
+
+export function getHotspotAnalystSummary(hotspot: Hotspot, year: Year) {
+  const severity = hotspot.severityByYear[year].toLowerCase();
+  return `${hotspot.districtName} has a ${severity}-severity ${hotspot.issueType.toLowerCase()} signal in ${year}. Cross-check the listed evidence before escalating the recommended action.`;
+}
+
 function metrics(forestHealthScore: number, approvedClaims: number, pendingClaims: number, anomalyScore: number, trend: Trend): StateMetrics {
   return { forestHealthScore, approvedClaims, pendingClaims, anomalyScore, trend };
 }

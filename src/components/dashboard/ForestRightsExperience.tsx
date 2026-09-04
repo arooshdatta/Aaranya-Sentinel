@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { hotspots } from "../../data/forest-rights";
 import type { StateId, Year } from "../../types/forest-rights";
-import { IntelligencePanel } from "../intelligence/IntelligencePanel";
+import { InvestigationDrawer } from "../intelligence/InvestigationDrawer";
+import { Header, type CommandSection } from "../layout/Header";
 import { MapViewport } from "../map/MapViewport";
 import { TimelineSlider } from "../timeline/TimelineSlider";
 
 export function ForestRightsExperience() {
   const [year, setYear] = useState<Year>(2024);
+  const [activeSection, setActiveSection] = useState<CommandSection>("National");
+  const [drawerOpen, setDrawerOpen] = useState(true);
   const [selectedStateId, setSelectedStateId] = useState<StateId | null>(null);
   const [selectedHotspotId, setSelectedHotspotId] = useState<string | null>(null);
   const selectedHotspot = hotspots.find((hotspot) => hotspot.id === selectedHotspotId) ?? null;
@@ -16,6 +19,7 @@ export function ForestRightsExperience() {
   function selectState(stateId: StateId) {
     setSelectedStateId(stateId);
     setSelectedHotspotId(null);
+    setDrawerOpen(true);
   }
 
   function selectHotspot(hotspotId: string) {
@@ -24,6 +28,7 @@ export function ForestRightsExperience() {
 
     setSelectedStateId(hotspot.stateId);
     setSelectedHotspotId(hotspotId);
+    setDrawerOpen(true);
   }
 
   function clearSelection() {
@@ -32,28 +37,31 @@ export function ForestRightsExperience() {
   }
 
   return (
-    <main className="relative">
-      <section aria-label="India forest rights monitoring map" className="relative min-h-screen">
-        <MapViewport
-          year={year}
-          selectedStateId={selectedStateId}
-          selectedHotspotId={selectedHotspotId}
-          onSelectState={selectState}
-          onSelectHotspot={selectHotspot}
-          onClearSelection={clearSelection}
-        />
-        <div className="absolute right-5 top-52 z-20 w-[min(22rem,calc(100%-2.5rem))] sm:right-8 sm:top-32 lg:right-12">
-          <IntelligencePanel
+    <>
+      <Header activeSection={activeSection} onSectionChange={setActiveSection} />
+      <main className="flex min-h-[calc(100svh-4.5rem)]">
+        <section aria-label="Forest rights map workspace" className="relative min-w-0 flex-1">
+          <MapViewport
             year={year}
             selectedStateId={selectedStateId}
-            selectedHotspot={selectedHotspot}
-            onClose={clearSelection}
+            selectedHotspotId={selectedHotspotId}
+            onSelectState={selectState}
+            onSelectHotspot={selectHotspot}
+            onClearSelection={clearSelection}
           />
-        </div>
-        <div className="absolute inset-x-5 bottom-7 z-20 sm:inset-x-8 sm:bottom-9 lg:inset-x-12">
-          <TimelineSlider year={year} onSelectYear={setYear} />
-        </div>
-      </section>
-    </main>
+          <div className="absolute inset-x-5 bottom-6 z-20 sm:inset-x-8 lg:inset-x-10">
+            <TimelineSlider year={year} onSelectYear={setYear} />
+          </div>
+        </section>
+        <InvestigationDrawer
+          open={drawerOpen}
+          year={year}
+          selectedStateId={selectedStateId}
+          selectedHotspot={selectedHotspot}
+          onToggle={() => setDrawerOpen((open) => !open)}
+          onClearSelection={clearSelection}
+        />
+      </main>
+    </>
   );
 }

@@ -27,12 +27,6 @@ const stateShapes: Array<{ id: StateId; path: string }> = [
   { id: "assam", path: "M386 153 L422 150 L446 159 L463 177 L447 194 L423 193 L406 207 L385 184 Z" },
 ];
 
-const particles = [
-  [12, 27, 1, 9], [19, 71, 1.5, 13], [27, 18, 1, 11], [34, 79, 1, 15],
-  [43, 31, 1.5, 10], [56, 17, 1, 14], [66, 76, 1.5, 12], [73, 28, 1, 16],
-  [81, 64, 1.5, 11], [88, 38, 1, 14], [92, 81, 1, 10],
-] as const;
-
 interface MapViewportProps {
   year: Year;
   selectedStateId: StateId | null;
@@ -74,7 +68,7 @@ export function MapViewport({
   return (
     <section
       aria-labelledby="map-heading"
-      className="relative min-h-screen overflow-hidden bg-[#070B14]"
+      className="relative min-h-[calc(100svh-4.5rem)] overflow-hidden bg-[#070B14]"
       onClick={onClearSelection}
       onPointerLeave={resetParallax}
       onPointerMove={handlePointerMove}
@@ -90,42 +84,12 @@ export function MapViewport({
       />
       <div className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(rgba(148,163,184,0.48)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.48)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_76%)]" />
 
-      {!reduceMotion && particles.map(([left, top, size, duration], index) => (
-        <motion.span
-          key={index}
-          aria-hidden="true"
-          className="absolute rounded-full bg-[#5eead4] shadow-[0_0_10px_rgba(20,184,166,0.8)]"
-          style={{ left: left + "%", top: top + "%", width: size * 2 + "px", height: size * 2 + "px" }}
-          animate={{ y: [0, -22, 0], opacity: [0.08, 0.72, 0.08], scale: [0.75, 1.15, 0.75] }}
-          transition={{ duration, repeat: Infinity, ease: "easeInOut", delay: index * 0.43 }}
-        />
-      ))}
-
-      <motion.div
-        aria-hidden="true"
-        className="absolute left-1/2 top-[49%] size-[min(72vw,48rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#14B8A6]/15"
-        animate={reduceMotion ? undefined : { scale: [0.86, 1.16], opacity: [0.5, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeOut" }}
-      />
-      <motion.div
-        aria-hidden="true"
-        className="absolute left-1/2 top-[49%] size-[min(64vw,42rem)] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 [background:conic-gradient(from_45deg,transparent_0deg,transparent_296deg,rgba(94,234,212,0.32)_335deg,transparent_360deg)] [mask-image:radial-gradient(circle,transparent_58%,black_59%,black_60%,transparent_61%)]"
-        animate={reduceMotion ? undefined : { rotate: 360 }}
-        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.div
-        aria-hidden="true"
-        className="absolute left-[18%] top-[17%] h-px w-[64%] bg-gradient-to-r from-transparent via-[#5eead4]/35 to-transparent blur-[0.5px]"
-        animate={reduceMotion ? undefined : { y: [0, 430, 0], opacity: [0, 0.7, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      <div className="absolute inset-x-5 top-28 z-10 sm:left-8 sm:top-32 lg:left-12">
+      <div className="absolute inset-x-5 top-8 z-10 sm:left-8 sm:top-9 lg:left-10">
         <motion.p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#14B8A6]" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-          National forest watch · {year}
+          National workspace · {year}
         </motion.p>
         <motion.h1 id="map-heading" className="mt-3 text-3xl font-medium tracking-[-0.055em] text-[#E2E8F0] sm:text-4xl" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.08 }}>
-          India, from above
+          Investigation map
         </motion.h1>
       </div>
 
