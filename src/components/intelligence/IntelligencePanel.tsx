@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { getMockAnalystSummary, getSeverityColor, getStateMetrics, stateProfiles } from "../../data/forest-rights";
+import { getHotspotImpact, getHotspotSeverity, getMockAnalystSummary, getSeverityColor, getStateMetrics, stateProfiles } from "../../data/forest-rights";
 import type { Hotspot, StateId, Year } from "../../types/forest-rights";
 
 interface IntelligencePanelProps {
@@ -23,8 +23,8 @@ export function IntelligencePanel({ year, selectedStateId, selectedHotspot, onCl
             <PanelHeader eyebrow="District hotspot" title={selectedHotspot.districtName} onClose={onClose} />
             <div className="mt-5 space-y-3 border-t border-[#94A3B8]/10 pt-4">
               <ContextLine label="Issue" value={selectedHotspot.issueType} />
-              <ContextLine label="Severity" value={selectedHotspot.severityByYear[year]} color={getSeverityColor(selectedHotspot.severityByYear[year])} />
-              <ContextLine label="Estimated impact" value={selectedHotspot.impactByYear[year]} />
+              <ContextLine label="Severity" value={getHotspotSeverity(selectedHotspot, year)} color={getSeverityColor(getHotspotSeverity(selectedHotspot, year))} />
+              <ContextLine label="Estimated impact" value={getHotspotImpact(selectedHotspot, year)} />
             </div>
             <p className="mt-5 border-t border-[#94A3B8]/10 pt-4 text-xs leading-5 text-[#94A3B8]">
               <span className="font-medium text-[#E2E8F0]">Recommended action: </span>

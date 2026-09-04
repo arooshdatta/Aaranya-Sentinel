@@ -1,4 +1,4 @@
-import type { Hotspot, Severity, StateId, StateMetrics, StateProfile, Trend, Year } from "../types/forest-rights";
+import { OBSERVED_YEARS, type Hotspot, type ObservedYear, type Severity, type StateId, type StateMetrics, type StateProfile, type Trend, type Year } from "../types/forest-rights";
 
 export const stateProfiles: Record<StateId, StateProfile> = {
   rajasthan: {
@@ -92,25 +92,46 @@ export const stateProfiles: Record<StateId, StateProfile> = {
 };
 
 export const hotspots: Hotspot[] = [
-  hotspot("sawai-madhopur", "rajasthan", "Sawai Madhopur", "Boundary pressure", [163, 184], ["Green", "Amber", "Amber", "Red", "Red"], ["260 ha", "340 ha", "420 ha", "610 ha", "780 ha"], "Prioritize field boundary verification."),
-  hotspot("barwani", "madhya-pradesh", "Barwani", "Claim verification delay", [246, 294], ["Green", "Green", "Amber", "Amber", "Red"], ["180 claims", "210 claims", "270 claims", "340 claims", "410 claims"], "Expedite document review with local teams."),
-  hotspot("balaghat", "madhya-pradesh", "Balaghat", "Forest fringe change", [286, 256], ["Amber", "Amber", "Amber", "Red", "Red"], ["190 ha", "230 ha", "310 ha", "440 ha", "530 ha"], "Schedule satellite and ground-truth review."),
-  hotspot("gadchiroli", "maharashtra", "Gadchiroli", "Pending claim cluster", [229, 358], ["Green", "Green", "Amber", "Amber", "Red"], ["120 claims", "150 claims", "220 claims", "290 claims", "360 claims"], "Coordinate a district claim resolution drive."),
-  hotspot("kodagu", "karnataka", "Kodagu", "Habitat fragmentation", [218, 456], ["Amber", "Green", "Green", "Green", "Green"], ["175 ha", "150 ha", "120 ha", "105 ha", "90 ha"], "Maintain restoration monitoring across corridors."),
-  hotspot("kanker", "chhattisgarh", "Kanker", "Tenure overlap", [328, 284], ["Amber", "Amber", "Green", "Green", "Green"], ["230 claims", "210 claims", "180 claims", "150 claims", "120 claims"], "Continue joint tenure reconciliation."),
-  hotspot("keonjhar", "odisha", "Keonjhar", "Extraction anomaly", [350, 351], ["Green", "Amber", "Amber", "Red", "Red"], ["140 ha", "190 ha", "260 ha", "390 ha", "480 ha"], "Open a targeted compliance assessment."),
-  hotspot("west-singhbhum", "jharkhand", "West Singhbhum", "Claim backlog", [354, 277], ["Red", "Amber", "Amber", "Green", "Green"], ["380 claims", "330 claims", "280 claims", "220 claims", "170 claims"], "Sustain the district-level verification cell."),
-  hotspot("kokrajhar", "assam", "Kokrajhar", "Encroachment signal", [428, 176], ["Green", "Amber", "Amber", "Red", "Red"], ["95 ha", "130 ha", "190 ha", "280 ha", "350 ha"], "Deploy a coordinated forest boundary survey."),
-  hotspot("dibrugarh", "assam", "Dibrugarh", "Riparian stress", [447, 182], ["Green", "Green", "Amber", "Amber", "Red"], ["70 ha", "88 ha", "115 ha", "140 ha", "190 ha"], "Validate hydrology and forest-edge change."),
+  hotspot("sawai-madhopur", "rajasthan", "Sawai Madhopur", "Boundary pressure", [76.35, 26.02], ["Green", "Amber", "Amber", "Red", "Red"], ["260 ha", "340 ha", "420 ha", "610 ha", "780 ha"], "Prioritize field boundary verification."),
+  hotspot("barwani", "madhya-pradesh", "Barwani", "Claim verification delay", [74.9, 22.03], ["Green", "Green", "Amber", "Amber", "Red"], ["180 claims", "210 claims", "270 claims", "340 claims", "410 claims"], "Expedite document review with local teams."),
+  hotspot("balaghat", "madhya-pradesh", "Balaghat", "Forest fringe change", [80.18, 21.82], ["Amber", "Amber", "Amber", "Red", "Red"], ["190 ha", "230 ha", "310 ha", "440 ha", "530 ha"], "Schedule satellite and ground-truth review."),
+  hotspot("gadchiroli", "maharashtra", "Gadchiroli", "Pending claim cluster", [80.0, 20.18], ["Green", "Green", "Amber", "Amber", "Red"], ["120 claims", "150 claims", "220 claims", "290 claims", "360 claims"], "Coordinate a district claim resolution drive."),
+  hotspot("kodagu", "karnataka", "Kodagu", "Habitat fragmentation", [75.73, 12.34], ["Amber", "Green", "Green", "Green", "Green"], ["175 ha", "150 ha", "120 ha", "105 ha", "90 ha"], "Maintain restoration monitoring across corridors."),
+  hotspot("kanker", "chhattisgarh", "Kanker", "Tenure overlap", [81.5, 20.27], ["Amber", "Amber", "Green", "Green", "Green"], ["230 claims", "210 claims", "180 claims", "150 claims", "120 claims"], "Continue joint tenure reconciliation."),
+  hotspot("keonjhar", "odisha", "Keonjhar", "Extraction anomaly", [85.58, 21.63], ["Green", "Amber", "Amber", "Red", "Red"], ["140 ha", "190 ha", "260 ha", "390 ha", "480 ha"], "Open a targeted compliance assessment."),
+  hotspot("west-singhbhum", "jharkhand", "West Singhbhum", "Claim backlog", [85.3, 22.55], ["Red", "Amber", "Amber", "Green", "Green"], ["380 claims", "330 claims", "280 claims", "220 claims", "170 claims"], "Sustain the district-level verification cell."),
+  hotspot("kokrajhar", "assam", "Kokrajhar", "Encroachment signal", [89.9, 26.4], ["Green", "Amber", "Amber", "Red", "Red"], ["95 ha", "130 ha", "190 ha", "280 ha", "350 ha"], "Deploy a coordinated forest boundary survey."),
+  hotspot("dibrugarh", "assam", "Dibrugarh", "Riparian stress", [94.9, 27.48], ["Green", "Green", "Amber", "Amber", "Red"], ["70 ha", "88 ha", "115 ha", "140 ha", "190 ha"], "Validate hydrology and forest-edge change."),
 ];
 
 export function getStateMetrics(stateId: StateId, year: Year) {
-  return stateProfiles[stateId].metricsByYear[year];
+  const profile = stateProfiles[stateId];
+  const observedYear = nearestObservedYear(year);
+  const observed = profile.metricsByYear[observedYear];
+
+  if (year === observedYear) return observed;
+
+  const direction = year < 2020 ? -1 : 1;
+  const distance = Math.abs(year - observedYear);
+  const adjacent = profile.metricsByYear[direction < 0 ? 2021 : 2023];
+  const healthDelta = observed.forestHealthScore - adjacent.forestHealthScore;
+  const approvedDelta = observed.approvedClaims - adjacent.approvedClaims;
+  const pendingDelta = observed.pendingClaims - adjacent.pendingClaims;
+  const anomalyDelta = observed.anomalyScore - adjacent.anomalyScore;
+  const anomalyScore = clamp(Math.round(observed.anomalyScore + anomalyDelta * distance), 8, 92);
+
+  return {
+    forestHealthScore: clamp(Math.round(observed.forestHealthScore + healthDelta * distance), 35, 95),
+    approvedClaims: Math.max(0, Math.round(observed.approvedClaims + approvedDelta * distance)),
+    pendingClaims: Math.max(0, Math.round(observed.pendingClaims + pendingDelta * distance)),
+    anomalyScore,
+    trend: anomalyScore >= 58 ? "Critical" : anomalyScore <= 32 ? "Improving" : "Stable",
+  } satisfies StateMetrics;
 }
 
 export function getMockAnalystSummary(stateId: StateId, year: Year) {
   const profile = stateProfiles[stateId];
-  const current = profile.metricsByYear[year];
+  const current = getStateMetrics(stateId, year);
   const baseline = profile.metricsByYear[2020];
   const pendingChange = Math.round(((current.pendingClaims - baseline.pendingClaims) / baseline.pendingClaims) * 100);
   const priority = current.anomalyScore >= 65 ? "High" : current.anomalyScore >= 45 ? "Medium" : "Routine";
@@ -120,7 +141,7 @@ export function getMockAnalystSummary(stateId: StateId, year: Year) {
 }
 
 export function getSeverityColor(severity: Severity) {
-  return { Green: "#14B8A6", Amber: "#F59E0B", Red: "#EF4444" }[severity];
+  return { Green: "#5F8F7B", Amber: "#B78743", Red: "#A85A52" }[severity];
 }
 
 export function getClaimStatus(severity: Severity) {
@@ -136,12 +157,37 @@ export function getEvidenceItems(hotspot: Hotspot, year: Year) {
 }
 
 export function getHotspotAnalystSummary(hotspot: Hotspot, year: Year) {
-  const severity = hotspot.severityByYear[year].toLowerCase();
+  const severity = getHotspotSeverity(hotspot, year).toLowerCase();
   return `${hotspot.districtName} has a ${severity}-severity ${hotspot.issueType.toLowerCase()} signal in ${year}. Cross-check the listed evidence before escalating the recommended action.`;
+}
+
+export function getHotspotSeverity(hotspot: Hotspot, year: Year) {
+  return hotspot.severityByYear[nearestObservedYear(year)];
+}
+
+export function getHotspotImpact(hotspot: Hotspot, year: Year) {
+  return hotspot.impactByYear[nearestObservedYear(year)];
+}
+
+export function getHotspotPosition(hotspot: Hotspot, year: Year): [number, number] {
+  const elapsed = year - 2020;
+  const direction = hotspot.id.length % 2 === 0 ? 1 : -1;
+
+  return [hotspot.position[0] + elapsed * direction * 0.018, hotspot.position[1] + elapsed * 0.009];
 }
 
 function metrics(forestHealthScore: number, approvedClaims: number, pendingClaims: number, anomalyScore: number, trend: Trend): StateMetrics {
   return { forestHealthScore, approvedClaims, pendingClaims, anomalyScore, trend };
+}
+
+function nearestObservedYear(year: Year): ObservedYear {
+  if (year <= 2020) return 2020;
+  if (year >= 2024) return 2024;
+  return year as ObservedYear;
+}
+
+function clamp(value: number, minimum: number, maximum: number) {
+  return Math.min(Math.max(value, minimum), maximum);
 }
 
 function hotspot(
@@ -154,9 +200,8 @@ function hotspot(
   impacts: string[],
   recommendedAction: string,
 ): Hotspot {
-  const years: Year[] = [2020, 2021, 2022, 2023, 2024];
-  const severityByYear = Object.fromEntries(years.map((year, index) => [year, severities[index]])) as Record<Year, Severity>;
-  const impactByYear = Object.fromEntries(years.map((year, index) => [year, impacts[index]])) as Record<Year, string>;
+  const severityByYear = Object.fromEntries(OBSERVED_YEARS.map((year, index) => [year, severities[index]])) as Record<ObservedYear, Severity>;
+  const impactByYear = Object.fromEntries(OBSERVED_YEARS.map((year, index) => [year, impacts[index]])) as Record<ObservedYear, string>;
 
   return { id, stateId, districtName, issueType, recommendedAction, position, severityByYear, impactByYear };
 }

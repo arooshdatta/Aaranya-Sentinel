@@ -1,6 +1,8 @@
-export const TIMELINE_YEARS = [2020, 2021, 2022, 2023, 2024] as const;
+export const TIMELINE_YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026] as const;
+export const OBSERVED_YEARS = [2020, 2021, 2022, 2023, 2024] as const;
 
 export type Year = (typeof TIMELINE_YEARS)[number];
+export type ObservedYear = (typeof OBSERVED_YEARS)[number];
 
 export type StateId =
   | "rajasthan"
@@ -26,7 +28,7 @@ export interface StateMetrics {
 export interface StateProfile {
   id: StateId;
   name: string;
-  metricsByYear: Record<Year, StateMetrics>;
+  metricsByYear: Record<ObservedYear, StateMetrics>;
 }
 
 export interface Hotspot {
@@ -36,6 +38,6 @@ export interface Hotspot {
   issueType: string;
   recommendedAction: string;
   position: [number, number];
-  severityByYear: Record<Year, Severity>;
-  impactByYear: Record<Year, string>;
+  severityByYear: Record<ObservedYear, Severity>;
+  impactByYear: Record<ObservedYear, string>;
 }

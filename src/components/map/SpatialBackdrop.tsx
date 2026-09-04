@@ -30,7 +30,7 @@ function TopographicWave({ reducedMotion }: { reducedMotion: boolean | null }) {
   return (
     <mesh ref={mesh} rotation={[-1.08, 0.05, 0.08]} position={[0, -0.5, -1.5]}>
       <planeGeometry args={[7.2, 7.2, SEGMENTS, SEGMENTS]} />
-      <meshBasicMaterial color="#14B8A6" opacity={0.16} transparent wireframe depthWrite={false} />
+      <meshBasicMaterial color="#5F8F7B" opacity={0.05} transparent wireframe depthWrite={false} />
     </mesh>
   );
 }
@@ -63,7 +63,7 @@ function AmbientParticles({ reducedMotion }: { reducedMotion: boolean | null }) 
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial color="#5eead4" size={0.025} sizeAttenuation transparent opacity={0.45} depthWrite={false} />
+      <pointsMaterial color="#7ea38f" size={0.025} sizeAttenuation transparent opacity={0.12} depthWrite={false} />
     </points>
   );
 }
@@ -72,7 +72,7 @@ export function SpatialBackdrop() {
   const reducedMotion = useReducedMotion();
 
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden opacity-80">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden opacity-35">
       <Canvas
         camera={{ fov: 42, position: [0, 0, 6] }}
         dpr={[1, 1.25]}
