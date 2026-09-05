@@ -5,14 +5,41 @@ export type Year = (typeof TIMELINE_YEARS)[number];
 export type ObservedYear = (typeof OBSERVED_YEARS)[number];
 
 export type StateId =
-  | "rajasthan"
+  | "andhra-pradesh"
+  | "arunachal-pradesh"
+  | "assam"
+  | "bihar"
+  | "chandigarh"
+  | "chhattisgarh"
+  | "dadra-and-nagar-haveli"
+  | "daman-and-diu"
+  | "delhi"
+  | "goa"
+  | "gujarat"
+  | "haryana"
+  | "himachal-pradesh"
+  | "jammu-and-kashmir"
+  | "jharkhand"
+  | "karnataka"
+  | "kerala"
+  | "ladakh"
   | "madhya-pradesh"
   | "maharashtra"
-  | "karnataka"
-  | "chhattisgarh"
+  | "manipur"
+  | "meghalaya"
+  | "mizoram"
+  | "nagaland"
   | "odisha"
-  | "jharkhand"
-  | "assam";
+  | "puducherry"
+  | "punjab"
+  | "rajasthan"
+  | "sikkim"
+  | "tamil-nadu"
+  | "tripura"
+  | "uttar-pradesh"
+  | "uttaranchal"
+  | "west-bengal"
+  | (string & {});
 
 export type Trend = "Improving" | "Stable" | "Critical";
 export type Severity = "Green" | "Amber" | "Red";

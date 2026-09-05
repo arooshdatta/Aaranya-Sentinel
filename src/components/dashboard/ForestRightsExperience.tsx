@@ -20,34 +20,46 @@ export function ForestRightsExperience() {
       {!entered ? (
         <OpeningExperience key="opening" onEnter={() => setEntered(true)} />
       ) : (
-        <motion.main key="atlas" className="min-h-screen bg-[#080f18]" initial={{ opacity: 0, y: 22, scale: 0.985 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.68, ease: [0.16, 1, 0.3, 1] }}>
+        <motion.main
+          key="atlas"
+          className="flex h-screen flex-col bg-[#07111D]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
           <Header />
-          <section aria-label="India forest-rights exploration" className="flex min-h-[calc(100svh-4.25rem)] flex-col">
-            <div className="relative min-h-[calc(100svh-14.5rem)] flex-1">
-              <MapViewport
-                year={year}
-                selectedStateId={selectedStateId}
-                selectedHotspotId={selectedHotspotId}
-                onSelectState={(stateId) => {
-                  setSelectedStateId(stateId);
-                  setSelectedHotspotId(null);
-                }}
-                onSelectHotspot={(hotspotId) => {
-                  const hotspot = hotspots.find((item) => item.id === hotspotId);
-                  if (!hotspot) return;
-                  setSelectedStateId(hotspot.stateId);
-                  setSelectedHotspotId(hotspotId);
-                }}
-                onClearSelection={() => {
-                  setSelectedStateId(null);
-                  setSelectedHotspotId(null);
-                }}
-              />
-            </div>
-            <div className="border-t border-white/[0.08] bg-[#0a121d] px-4 py-4 sm:px-7 lg:px-10">
+          {/* Map fills all remaining height — India dominates */}
+          <div className="relative flex-1 overflow-hidden">
+            <MapViewport
+              year={year}
+              selectedStateId={selectedStateId}
+              selectedHotspotId={selectedHotspotId}
+              onSelectState={(stateId) => {
+                setSelectedStateId(stateId);
+                setSelectedHotspotId(null);
+              }}
+              onSelectHotspot={(hotspotId) => {
+                const hotspot = hotspots.find((item) => item.id === hotspotId);
+                if (!hotspot) return;
+                setSelectedStateId(hotspot.stateId);
+                setSelectedHotspotId(hotspotId);
+              }}
+              onClearSelection={() => {
+                setSelectedStateId(null);
+                setSelectedHotspotId(null);
+              }}
+              onCloseDistrict={() => setSelectedHotspotId(null)}
+            />
+            {/* Timeline — left edge, vertically centered */}
+            <motion.div
+              className="absolute left-4 top-1/2 z-30 -translate-y-1/2 sm:left-6"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+            >
               <TimelineSlider year={year} onSelectYear={setYear} />
-            </div>
-          </section>
+            </motion.div>
+          </div>
         </motion.main>
       )}
     </AnimatePresence>
